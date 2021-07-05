@@ -3,8 +3,29 @@
   padding: 0;
   box-sizing: border-box;
 }
-
-.app {
-  width: 400px;
-  margin: 3rem auto;
+.products {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.loader img {
+  width: 100%;
+  height: auto;
+}
+.createBtn {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  outline: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+.createBtn i {
+  font-size: 35px;
 }

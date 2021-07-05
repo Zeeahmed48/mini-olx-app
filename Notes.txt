@@ -1,0 +1,17 @@
+main component dashboard where all ui will render with ads showing 
+route single ad details onclicking
+fixed add button on dashboard will naviagte to add post
+
+Add Product Page :
+
+1) title
+2) price
+3) images 5 inputs
+4) slider for image
+
+User Details Page : 
+
+1) name
+2) number
+3) submit button
+
