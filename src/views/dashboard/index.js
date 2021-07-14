@@ -1,50 +1,20 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { db } from '../../config/firebase';
-import loader from '../../assets/loader.webp';
+import Ajaxloader from '../../assets/images/Ajux_loader.gif';
+import ProductList from '../../components/productList';
 
-const Dashboard = () => {
-  const [allProducts, setAllProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(async () => {
-    setIsLoading(true);
-    const usersData = await db.collection('products').get();
-    const tempUsers = [];
-    try {
-      usersData.docs.forEach((product) => {
-        tempUsers.push(product.data());
-        setIsLoading(false);
-      });
-      setAllProducts(tempUsers);
-    } catch (error) {
-      console.log(error.message);
-    }
-  }, []);
-
+const Dashboard = ({ products, isLoading }) => {
   return (
-    <div>
-      <h1>Dashboard</h1>
+    <div className='container'>
       {isLoading ? (
         <div className='loader'>
-          <img src={loader} alt='loader' />
+          <img src={Ajaxloader} alt='loader' />
         </div>
       ) : (
-        <div className='products'>
-          {allProducts.map((product, index) => {
-            return (
-              <div key={index}>
-                <img src={product.productImage} width={150} height={150} />
-                <h2>{product.productTitle}</h2>
-                <p>{`$${product.productPrice}`}</p>
-              </div>
-            );
-          })}
-        </div>
+        <ProductList products={products} />
       )}
-      <Link to='/sell-product'>
+      <Link to='/sell'>
         <button className='createBtn'>
-          <i class='fas fa-plus-circle'></i>
+          <i className='fas fa-plus-circle'></i>
         </button>
       </Link>
     </div>

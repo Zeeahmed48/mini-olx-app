@@ -12,26 +12,16 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+const auth = firebase.auth();
 const db = firebase.firestore();
+const firebaseStorage = firebase.storage();
 
-const registerUser = (email, password, firstName, lastName) => {
-  firebase
-    .auth()
-    .createUserWithEmailAndPassword(email, password)
-    .then((userCredentials) => {
-      const fullName = `${firstName} ${lastName}`;
-      const user = userCredentials.user;
-      db.collection('users')
-        .doc(user.uid)
-        .set({ email, firstName, lastName, fullName });
-    })
-    .catch((error) => {
-      console.log('error===>', error.message);
-    });
+const registerUser = (email, password) => {
+  return auth.createUserWithEmailAndPassword(email, password);
 };
 
 const logIn = (email, password) => {
-  return firebase.auth().signInWithEmailAndPassword(email, password);
+  return auth.signInWithEmailAndPassword(email, password);
 };
 
-export { registerUser, logIn, db };
+export { registerUser, auth, logIn, db, firebaseStorage };

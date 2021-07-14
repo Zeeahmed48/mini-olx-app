@@ -1,55 +1,51 @@
 import { useState } from 'react';
-import { logIn } from '../../config/firebase';
-import loader from '../../assets/loader.webp';
+import { Link } from 'react-router-dom';
+import { logIn } from '../../../config/firebase';
+import { storeUser } from '../../../store/actions';
+import { useDispatch } from 'react-redux';
 
-const Login = ({ handleLogin }) => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(false);
-  const [isLoading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
-  const signIn = async () => {
-    setIsloading(true);
+  const signIn = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
     try {
       const user = await logIn(email, password);
-      setIsloading(false);
-      handleLogin(true);
+      dispatch(storeUser(user.user));
     } catch (error) {
       setErrorMessage(error.message);
+      setIsLoading(false);
     }
+    setEmail('');
+    setPassword('');
   };
 
   return (
-    <div>
-      <div>
-        <br />
+    <div className='login'>
+      <form onSubmit={signIn} className='login_form'>
         <input
           type='text'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder='Enter your email'
         />
-        <br />
         <input
           type='password'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder='Enter your password'
         />
-        <br />
-        {isLoading ? (
-          <img
-            src={loader}
-            // width='30px'
-            //  height='30px'
-          />
-        ) : (
-          <button onClick={signIn}>Login</button>
-        )}
-
-        <br />
+        <button type='submit'>{!isLoading ? 'Login' : 'Please Wait'}</button>
         <p style={{ color: 'red' }}>{errorMessage}</p>
-      </div>
+        <Link to={'/signup'} className='auth_link'>
+          Create new account
+        </Link>
+      </form>
     </div>
   );
 };
